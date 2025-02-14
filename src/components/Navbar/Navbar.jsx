@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/firebase'; // Import auth from Firebase
 import { signOut, onAuthStateChanged } from "firebase/auth"; // Import signOut & state listener
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
+import { StoreContext } from '../../context/StoreContext';
 
 const Navbar = ({ setShowLogin }) => {
+    const {getTotalCartAmount} = useContext(StoreContext); 
     const [menu, setMenu] = useState("home");
     const [user, setUser] = useState(null); // Track logged-in user
     const navigate = useNavigate();
@@ -48,7 +50,7 @@ const Navbar = ({ setShowLogin }) => {
                 <img src={assets.search_icon} alt="Search" />
                 <div className="navbar-search-icon">
                     <Link to="/cart"><img src={assets.basket_icon} alt="Cart" /></Link>
-                    <div className="dot"></div>
+                    <div className={getTotalCartAmount()===0?'':'dot'}></div>
                 </div>
                 
                 {user ? (
